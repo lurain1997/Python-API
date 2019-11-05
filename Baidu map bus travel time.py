@@ -5,14 +5,14 @@ import requests
 import pandas as pd
 import time
 
-HQ = '35.79834,112.935106'
+d = '35.79834,112.935106' #终点纬度,经度
 baidu = 'http://api.map.baidu.com/direction/v2/transit?output=json'
-ak = 'bGmjUSC1fTrWum4GVO101GjTmq0PKjn6'
+ak = '***' #申请的密钥
 
 def get_routes(o):
-    f1 = open(r'D:\红旗生活广场公交出行时耗.txt', 'a')
-    f2 = open(r'D:\红旗生活广场公交错误.txt', 'a')
-    url = baidu + '&origin=' + o + '&destination=' + HQ + '&ak=' + ak
+    f1 = open(r'D:\1.txt', 'a')
+    f2 = open(r'D:\1错误.txt', 'a')
+    url = baidu + '&origin=' + o + '&destination=' + d + '&ak=' + ak
     try:
         response = requests.get(url).json()
         result = response['result']
