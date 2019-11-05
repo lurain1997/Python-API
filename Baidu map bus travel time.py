@@ -1,43 +1,41 @@
+#!/usr/bin/python 
+# -*- coding: utf-8 -*-
+# 服务文档http://lbsyun.baidu.com/index.php?title=webapi/direction-api-v2
 import requests
 import pandas as pd
+import time
 
-#D = '32.093502,118.803714' #终点坐标
+HQ = '35.79834,112.935106'
+baidu = 'http://api.map.baidu.com/direction/v2/transit?output=json'
+ak = 'bGmjUSC1fTrWum4GVO101GjTmq0PKjn6'
 
-baidu = 'http://api.map.baidu.com/direction/v2/transit?output=json&tactics_incity=4'
-
-ak = 'nmMNc8yKPk9j5P9Q7pTrRGxjwGShT1S7' #申请的密钥 http://lbsyun.baidu.com/apiconsole/key?application=key
-
-def get_routes(o, d): #设置请求参数
-    url = baidu + '&origin=' + o + '&destination=' + d + '&ak=' + ak
+def get_routes(o):
+    f1 = open(r'D:\红旗生活广场公交出行时耗.txt', 'a')
+    f2 = open(r'D:\红旗生活广场公交错误.txt', 'a')
+    url = baidu + '&origin=' + o + '&destination=' + HQ + '&ak=' + ak
     try:
         response = requests.get(url).json()
         result = response['result']
-        o_name = result['origin']['city_name']
+        o_lng = result['origin']['location']['lng']
+        o_lat = result['origin']['location']['lat']
         total = result['total']
-        r = result['routes'][0]
-        time = r['duration']
-        price = 0
-        for p in r['price_detail']:
-            price += p['ticket_price']
-        t = 0
-        for s in r['steps']:
-            type = s[0]['vehicle_info']['type']
-            if type == 3:
-                t = t + 1
-        all_info = o_name + ';' + str(total) + ';' + str(time) + ';' + str(price) + ';' + str(t - 1) #可返回O点ID、OD间公交出行方案数量、OD间公交出行时间、OD间公交出行费用、OD间公交出行换乘次数
-        return all_info
+        for r in result['routes']:
+            price = r['price']
+            time = r['duration']
+            all_info = str(o_lat) + ',' + str(o_lng) + ';' + str(total) + ';' + str(time)
+            print(all_info)
+            f1.write(all_info + '\n')
     except:
-        all_info = '无数据'+ ';' + 'null'+ ';' + 'null'+ ';' + 'null'+ ';' + 'null'#可能会因OD间无公交出行方案，返回null值
-        return all_info
+        f2.write(o + '\n')
 
-xy = pd.read_excel('H:/NJ/inhi/街道坐标.xlsx',index_col=0) #批量读取O点坐标，与PY文件在一个文件夹中
+xy = pd.read_excel('D:\***.xlsx',index_col=0) #存放起点坐标的文件
 
-f = open(r'H:/NJ/inhi/街道出行时间.txt', 'a') #保存返回参数文件，与PY文件在一个文件夹中
-for i in range(0,86):
+start = time.time()
+for i in range(1,len(xy)+1):
     o = xy.get_value(i, 'xy')
-    o_name = xy.get_value (i, '名称')
-    for j in range (0,86):
-        d_name = xy.get_value (j, '名称')
-        d = xy.get_value(j, 'xy')
-        print(str(i) + ';' + o_name + ';'+ d_name + ';' + get_routes(o, d))
-        f.write(str(i) + ';' + o_name + ';'+ d_name + ';' + get_routes(o, d) + '\n')
+    get_routes(o)
+    time.sleep(2)
+
+end = time.time()
+lasttime = int((end-start))
+print('耗时'+str(lasttime)+'s')
