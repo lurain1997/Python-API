@@ -6,7 +6,7 @@ import pandas as pd
 import time
 
 baidu = 'http://api.map.baidu.com/geoconv/v1/'
-ak = 'nmMNc8yKPk9j5P9Q7pTrRGxjwGShT1S7'
+ak = '***'
 
 corf = 5
 # 1：GPS设备获取的角度坐标，WGS84坐标
