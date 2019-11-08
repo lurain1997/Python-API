@@ -22,7 +22,6 @@ q = '超市'
 names = []
 lats = []
 lngs = []
-#lines = []
 
 def bound_search(b):
     for pages in range(0,20):
@@ -38,11 +37,9 @@ def bound_search(b):
                     lat = i['location']['lat']
                     lng = i['location']['lng']
                     print(name, lat, lng)
-                    #line = i['address']
                     names.append(name)
                     lats.append(lat)
                     lngs.append(lng)
-                    #lines.append(line)
         else:
             print(poi['bounds'])
 
