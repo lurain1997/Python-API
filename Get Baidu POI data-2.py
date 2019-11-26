@@ -10,10 +10,10 @@ next(f)
 bounds = []
 for line in f:
     line2 = line.split(',')
-    latl = line2[6] #latl
-    lngl = line2[7] #lngl
-    latr = line2[8] #latr
-    lngr = line2[9] #lngr
+    latl = line2[-4] #latl左下角经度
+    lngl = line2[-3] #lngl左下角纬度
+    latr = line2[-2] #latr右上角经度
+    lngr = line2[-1] #lngr右上角纬度
     bounds.append(latl + ',' + lngl + ',' + latr + ',' + lngr)
 
 baidu = 'http://api.map.baidu.com/place/v2/search'
