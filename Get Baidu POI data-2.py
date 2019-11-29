@@ -43,7 +43,7 @@ def bound_search(b):
             print(poi['bounds'])
 
 for r in bounds:
-    time.sleep(1)  #解决一分钟并发量限制
+    time.sleep(2)  #解决一分钟并发量限制
     bound_search(r)
 
 #保存结果
