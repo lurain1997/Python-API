@@ -25,7 +25,7 @@ lngs = []
 
 def bound_search(b):
     for pages in range(0,20):
-        poi = {'q':q, 'coord_type': 1, 'bounds':b,'output':'json', 'ak': ak, 'page_size':'20', 'page_num':pages}
+        poi = {'q':q,'bounds':b,'output':'json', 'ak': ak, 'page_size':'20', 'page_num':pages}
         response = requests.get(baidu, params=poi).json()
         total = response['total']
         if total < 400:
